@@ -9,7 +9,7 @@
  * @date 2/11/2015
  */
 
-package jframe1;
+package breakingbad;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -214,6 +214,31 @@ public class Base {
             Base aniObjeto = (Base) objObjeto;
             Rectangle rctObjetoParam = new Rectangle(aniObjeto.getX(),
                     aniObjeto.getY(), aniObjeto.getAncho(), aniObjeto.getAlto());
+            return rctEsteObjeto.intersects(rctObjetoParam);
+        } 
+        else {
+            return false;
+        }
+    }
+    
+    /*
+     * intersecta 2
+     *
+     * Metodo que checa si un objeto espacial intersecta a otro por arriba
+     *
+     * @param objObjeto es un objeto de la clase <code>Object</code>
+     * @return un boleano para saber si intersecta o no
+     */
+    public boolean intersecta (Object objObjeto, int n) {
+        if (objObjeto instanceof Base) {
+            Rectangle rctEsteObjeto = new Rectangle(this.getX(), this.getY(),
+                    this.getAncho(), this.getAlto());
+            /*Solo tomar en cuenta a un pequeno rectangulo 
+                de la parte de abajo del objeto */
+            Base aniObjeto = (Base) objObjeto;
+            Rectangle rctObjetoParam = new Rectangle(aniObjeto.getX(),
+                    aniObjeto.getY(),
+                    aniObjeto.getAncho(), aniObjeto.getAlto() - 5);
             return rctEsteObjeto.intersects(rctObjetoParam);
         } 
         else {
