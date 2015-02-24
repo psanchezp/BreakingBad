@@ -8,7 +8,7 @@
  * @version 1.0
  * @date 2/11/2015
  */
-package jframe1;
+package breakingbad;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.AudioInputStream;
