@@ -6,6 +6,7 @@
 package breakingbad;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -226,6 +227,14 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             iDireccionXpelota = (int) (Math.random() * 2) + 1; //Izq o derecha          
         }
         
+        //Colision de la barra con la pared
+        if(basBarra.getX() <= 0) { //Choca a la izq
+            basBarra.setX(0);
+        }
+        if(basBarra.getX() + basBarra.getAncho() >= iWidth) { //Choca a la der
+            basBarra.setX(iWidth-basBarra.getAncho());
+        }
+        
         //Colision pelota con la barra
         if(basPelota.intersecta(basBarra)) {
             if(iDireccionXpelota == 1) {
@@ -242,8 +251,9 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         for(Base basBrick : llsBricks){
             if(basBrick.intersecta(basPelota)) {
                 iScore++;
+                sndSonidoBrick.play();
                 llsBricks.remove(basBrick);
-                break;
+                break; //NECESARIO para evitar un exception
             }
         }
 
@@ -294,7 +304,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
      */
     public void paint1 (Graphics graDibujo) {
         // si la imagen ya se cargo
-        if (llsBricks != null && basPelota != null && basBarra != null) {
+        if (llsBricks != null && basPelota != null && basBarra != null 
+                && llsVidas != null) {
             if (bVivo){
                 
                 //Dibuja la imagen del brick en el Applet
@@ -308,16 +319,17 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 //Dibuja la barra
                 basBarra.paint(graDibujo, this);
                 
+                //Despliega vidas
                 for(Base basVidas : llsVidas){
                     basVidas.paint(graDibujo, this);
                 }
                 
                 graDibujo.drawImage(animBarra.getImagen(), 300, 300, this);
 
-                //Puntos y vidas desplegados en la esquina superior izquierda
-                //graDibujo.setColor(Color.red);
-                //graDibujo.drawString("Puntos: " + iPuntos, 15, 45);
-                //graDibujo.drawString ("Vidas: " + iVidas, 15, 60);
+                //Puntos desplegados en la esquina superior izquierda
+                graDibujo.setFont(new Font("Arial", Font.PLAIN, 17));
+                graDibujo.setColor(Color.red);
+                graDibujo.drawString("Puntos: " + iScore, 340, 45);
             }
             else{
                 basGameOver.paint(graDibujo, this);
