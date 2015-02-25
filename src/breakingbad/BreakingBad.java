@@ -36,8 +36,10 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private SoundClip sndSonidoBrick;   // Objeto sonido del brick
     private LinkedList <Base> llsBricks;   //Linkedlist de bricks
     private LinkedList <Base> llsVidas;   //Linkedlist de vidas
-    private int iDireccion; //direccion de la pelota
+    private int iDireccion; //direccion de la barra
     private int iVidas;  //vidas del jugador
+    private int iDireccionYpelota; //Direccion en Y de la pelota
+    private int iDireccionXpelota; //Direccion en X de la pelota
     public BufferedImage imgVidas;
     
     public BreakingBad () {
@@ -69,19 +71,22 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             iPosY += 31;
         }
         
+        iDireccionYpelota = 3; //Empieza hacia abajo
+        iDireccionXpelota = (int) (Math.random() * 2) + 1; //Izq o derecha
+        
         // defino la imagen de la pelota
 	URL urlImagenPelota = this.getClass().getResource("pill.gif");
         
         // se crea el objeto para la pelota
         iPosX = 200;
-        iPosY = 450;       
+        iPosY = 250;       
 	basPelota = new Base(iPosX, iPosY, 21, 22,
                 Toolkit.getDefaultToolkit().getImage(urlImagenPelota));
         
         iPosX = 200;
-        iPosY = 500;
+        iPosY = 530;
         
-        // defino la imagen de la pelota
+        // defino la imagen de la barra
 	URL urlImagenBarra = this.getClass().getResource("barra.gif");
         basBarra = new Base(iPosX, iPosY, 90, 55,
                 Toolkit.getDefaultToolkit().getImage(urlImagenBarra));
@@ -120,8 +125,10 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
            movimientos y se vuelve a pintar todo
         */ 
         while (true) {
-            actualiza();
-            checaColision();
+            if (!bPausa) {
+                actualiza();
+                checaColision();
+            }
             repaint();
             try	{
                 // El thread se duerme.
@@ -147,6 +154,19 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         else if(iDireccion == 2) {
             basBarra.setX(basBarra.getX() + 2);
         }
+        
+        if(iDireccionXpelota == 1) { //Izquierda
+           basPelota.setX(basPelota.getX() - 2); 
+        }
+        if(iDireccionXpelota == 2) { //Derecha
+            basPelota.setX(basPelota.getX() + 2);
+        }
+        if(iDireccionYpelota == 3) { //Abajo
+           basPelota.setY(basPelota.getY() + 2); 
+        }
+        if(iDireccionYpelota == 4) { //Arriba
+            basPelota.setY(basPelota.getY() - 2);
+        }
 
     }
     
@@ -157,6 +177,23 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
      * 
      */
     public void checaColision () {
+        if(basPelota.getX() <= 0) {
+            iDireccionXpelota = 2;
+        }
+        if(basPelota.getX() + basPelota.getAncho() >= iWidth) {
+            iDireccionXpelota = 1;
+        }
+        if(basPelota.getY() <= 0) {
+            iDireccionYpelota = 3;
+        }
+        if(basPelota.getY() > iHeight) {
+            llsVidas.removeLast();
+            basPelota.setX(200);
+            basPelota.setY(250);
+            iDireccionYpelota = 3; //Empieza hacia abajo
+            iDireccionXpelota = (int) (Math.random() * 2) + 1; //Izq o derecha
+                   
+        }
 
     }
     
@@ -269,10 +306,10 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent ke) {
-       if (ke.getKeyCode() == KeyEvent.VK_LEFT) {    //Presiono flecha izquierda
+       if (ke.getKeyCode() == KeyEvent.VK_LEFT) { //Suelta flecha izquierda
             iDireccion = 0;
         } 
-        else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
+        else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) { //Suelta flecha derecha
             iDireccion = 0;
         }
     }
