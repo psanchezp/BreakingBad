@@ -39,6 +39,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private int iDireccion; //direccion de la pelota
     private int iVidas;  //vidas del jugador
     public BufferedImage imgVidas;
+    Animacion animBarra;
+    long lTiempo;
     
     public BreakingBad () {
         bVivo = true; //El jugador tiene vidas
@@ -98,6 +100,20 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             iPosX += 32;
         }
         
+        //Inicializando Animacion
+        animBarra = new Animacion();
+        Image imaBarra1 = Toolkit.getDefaultToolkit().getImage(
+                        this.getClass().getResource("barra1.gif"));
+        Image imaBarra2 = Toolkit.getDefaultToolkit().getImage(
+                        this.getClass().getResource("barra2.gif"));
+        Image imaBarra3 = Toolkit.getDefaultToolkit().getImage(
+                        this.getClass().getResource("barra3.gif"));
+        
+        animBarra.sumaCuadro(imaBarra1, 5000);
+        animBarra.sumaCuadro(imaBarra2, 5000);
+        animBarra.sumaCuadro(imaBarra1, 5000);
+        animBarra.sumaCuadro(imaBarra3, 5000);
+        
         //Inicializando el keylistener
         addKeyListener(this);
         
@@ -119,6 +135,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
            se checa si hubo colisiones para desaparecer jugadores o corregir
            movimientos y se vuelve a pintar todo
         */ 
+        lTiempo = System.currentTimeMillis();
         while (true) {
             actualiza();
             checaColision();
@@ -147,7 +164,10 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         else if(iDireccion == 2) {
             basBarra.setX(basBarra.getX() + 2);
         }
-
+        
+        long lTiempo2 = System.currentTimeMillis() - lTiempo;
+        lTiempo = lTiempo + lTiempo2;
+        animBarra.actualiza(lTiempo);
     }
     
     /**
@@ -222,6 +242,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 for(Base basVidas : llsVidas){
                         basVidas.paint(graDibujo, this);
                 }
+                
+                graDibujo.drawImage(animBarra.getImagen(), 300, 300, this);
 
                 //Puntos y vidas desplegados en la esquina superior izquierda
                 //graDibujo.setColor(Color.red);
