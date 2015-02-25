@@ -11,6 +11,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 import javax.swing.JFrame;
+import java.util.LinkedList;
 
 /**
  *
@@ -26,18 +27,30 @@ public class BreakingBad extends JFrame implements Runnable {
     /* objetos para manejar el buffer del Applet y este no parpadee */
     private Image    imaImagenApplet;   // Imagen a proyectar en Applet	
     private Graphics graGraficaApplet;  // Objeto grafico de la Imagen
+    private LinkedList <Base> llsBricks;   //Linkedlist de bricks
     
     public BreakingBad () {
         bVivo = true;
         
         // defino la imagen del brick
 	URL urlImagenBrick = this.getClass().getResource("bricks.gif");
+        llsBricks = new LinkedList <Base> ();
         
-        // se crea el objeto para el brick
-        int iPosX = 100;
-        int iPosY = 100;       
-	basBrick = new Base(iPosX, iPosY, 49, 30,
-                Toolkit.getDefaultToolkit().getImage(urlImagenBrick));
+        int iPosX;
+        int iPosY = 25;   
+        
+        for (int iI = 0; iI < 5; iI++) {
+            iPosX = 22;
+            for(int iJ = 0; iJ < 15; iJ++) {
+                basBrick = new Base(iPosX, iPosY, 49, 30,
+                    Toolkit.getDefaultToolkit().getImage(urlImagenBrick));
+                
+                llsBricks.add(basBrick);
+                
+                iPosX += 50;
+            }
+            iPosY += 31;
+        }
         
         // defino la imagen de la pelota
 	URL urlImagenPelota = this.getClass().getResource("pill.gif");
@@ -146,11 +159,13 @@ public class BreakingBad extends JFrame implements Runnable {
      */
     public void paint1 (Graphics graDibujo) {
         // si la imagen ya se cargo
-        if (basBrick != null && basPelota != null) {
+        if (llsBricks != null && basPelota != null) {
             if (bVivo){
-
+                
                 //Dibuja la imagen del brick en el Applet
-                basBrick.paint(graDibujo, this);
+                for(Base basBrick : llsBricks){
+                        basBrick.paint(graDibujo, this);
+                }
                 
                 //Dibuja la imagen de la pelota en el Applet
                 basPelota.paint(graDibujo, this);
