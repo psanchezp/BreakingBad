@@ -101,20 +101,12 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             llsVidas.add(basVidas);
             iPosX += 32;
         }
-        
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
         //Creando game over
         URL urlImagenGameOver = this.getClass().getResource("game-over.gif");
         basGameOver = new Base (200, 200, 450/2, 600/2, 
             Toolkit.getDefaultToolkit().getImage(urlImagenGameOver));
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> origin/master
         //Inicializando Animacion
         animBarra = new Animacion();
         Image imaBarra1 = Toolkit.getDefaultToolkit().getImage(
@@ -128,13 +120,12 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         animBarra.sumaCuadro(imaBarra2, 5000);
         animBarra.sumaCuadro(imaBarra1, 5000);
         animBarra.sumaCuadro(imaBarra3, 5000);
-<<<<<<< HEAD
+
         
         //Inicializando la Barra
         basBarra = new Base(iPosX, iPosY, 90, 55, animBarra);
 
-=======
->>>>>>> origin/master
+
         
         //Inicializando el keylistener
         addKeyListener(this);
@@ -188,20 +179,11 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         else if(iDireccion == 2) {
             basBarra.setX(basBarra.getX() + 2);
         }
-<<<<<<< HEAD
 
         long lTiempo2 = System.currentTimeMillis() - lTiempo;
         lTiempo = lTiempo + lTiempo2;
-        //animBarra.actualiza(lTiempo);
         basBarra.actualiza(lTiempo);
 
-=======
-        
-        long lTiempo2 = System.currentTimeMillis() - lTiempo;
-        lTiempo = lTiempo + lTiempo2;
-        animBarra.actualiza(lTiempo);
-        
->>>>>>> origin/master
         if(iDireccionXpelota == 1) { //Izquierda
            basPelota.setX(basPelota.getX() - 2); 
         }
@@ -214,11 +196,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         if(iDireccionYpelota == 4) { //Arriba
             basPelota.setY(basPelota.getY() - 2);
         }
-<<<<<<< HEAD
 
-
-=======
->>>>>>> origin/master
     }
     
     /**
