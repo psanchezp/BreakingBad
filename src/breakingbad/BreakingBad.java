@@ -46,6 +46,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private int iBricks; //cantidad de bricks en el juego
     Animacion animBarra; 
     long lTiempo;
+    private boolean bMover; //Determinar si esta en movimiento
     
     public BreakingBad () {
         bVivo = true; //El jugador tiene vidas
@@ -132,7 +133,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         //Inicializando la Barra
         basBarra = new Base(iPosX, iPosY, 90, 55, animBarra);
 
-
+        //Inicializando el booleano de movimiento
+        bMover = false;
         
         //Inicializando el keylistener
         addKeyListener(this);
@@ -189,7 +191,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
 
         long lTiempo2 = System.currentTimeMillis() - lTiempo;
         lTiempo = lTiempo + lTiempo2;
-        basBarra.actualiza(lTiempo);
+        basBarra.actualiza(lTiempo, bMover);
 
         if(iDireccionXpelota == 1) { //Izquierda
            basPelota.setX(basPelota.getX() - (1 + iVelPelota)); 
@@ -401,9 +403,11 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
 
         if (ke.getKeyCode() == KeyEvent.VK_LEFT) {    //Presiono flecha izquierda
             iDireccion = 1;
+            bMover = true;
         } 
         else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
             iDireccion = 2;
+            bMover = true;
         }
         
         //Al presionar ESC se sale del juego
@@ -421,9 +425,11 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     public void keyReleased(KeyEvent ke) {
        if (ke.getKeyCode() == KeyEvent.VK_LEFT) { //Suelta flecha izquierda
             iDireccion = 0;
+            bMover = false;
         } 
         else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) { //Suelta flecha derecha
             iDireccion = 0;
+            bMover = false;
         }
     }
     

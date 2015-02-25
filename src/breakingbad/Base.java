@@ -253,9 +253,15 @@ public class Base {
     *   
     *   Metodo que actualiza la imagen del objeto
     *   @param lTiempo es una long con el tiempo transcurrido
+    *   @param bMover es un booleano que determina si se esta moviendo
     */
-    public void actualiza (long lTiempo){
-        aniAnima.actualiza(lTiempo);
+    public void actualiza (long lTiempo, boolean bMover){
+        if (bMover){
+            aniAnima.actualiza(lTiempo);
+        }
+        else{
+            aniAnima.iniciar();
+        }
     }
     
     /*
