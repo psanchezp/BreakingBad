@@ -26,6 +26,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private Base basBrick; //objeto para los bricks
     private Base basPelota; //objeto para la pelota
     private Base basGameOver; //
+    private Base basVidas;
     private static final int iWidth = 450; //ancho de la pantalla
     private static final int iHeight = 600; //alto de la pantalla
     /* objetos para manejar el buffer del Applet y este no parpadee */
@@ -33,6 +34,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private Graphics graGraficaApplet;  // Objeto grafico de la Imagen
     private SoundClip sndSonidoBrick;   // Objeto sonido del brick
     private LinkedList <Base> llsBricks;   //Linkedlist de bricks
+    private LinkedList <Base> llsVidas;   //Linkedlist de vidas
     private int iDireccion; //direccion de la pelota
     private int iVidas;  //vidas del jugador
     public BufferedImage imgVidas;
@@ -50,7 +52,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         llsBricks = new LinkedList <Base> ();
         
         int iPosX;
-        int iPosY = 55;   
+        int iPosY = 65;   
         
         //Se crean los bricks en forma de matriz
         for (int iI = 0; iI < 5; iI++) {
@@ -74,6 +76,17 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         iPosY = 200;       
 	basPelota = new Base(iPosX, iPosY, 21, 22,
                 Toolkit.getDefaultToolkit().getImage(urlImagenPelota));
+        
+        llsVidas = new LinkedList <Base> ();
+        iPosX = 10;
+        URL urlImagenVidas = this.getClass().getResource("heisenberg.gif");
+        for(int i = 0; i < 3; i++) {
+            basVidas = new Base(iPosX, 30, 30, 30,
+            Toolkit.getDefaultToolkit().getImage(urlImagenVidas));
+            
+            llsVidas.add(basVidas);
+            iPosX += 32;
+        }
         
         //Inicializando el keylistener
         addKeyListener(this);
@@ -187,8 +200,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 //Dibuja la imagen de la pelota en el Applet
                 basPelota.paint(graDibujo, this);
                 
-                for(int i = 0; i < iVidas; i++) {
-                    
+                for(Base basVidas : llsVidas){
+                        basVidas.paint(graDibujo, this);
                 }
 
                 //Puntos y vidas desplegados en la esquina superior izquierda
