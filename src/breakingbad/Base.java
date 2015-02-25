@@ -288,20 +288,34 @@ public class Base {
      * @param objObjeto es un objeto de la clase <code>Object</code>
      * @return un boleano para saber si intersecta o no
      */
-    public boolean intersecta (Object objObjeto, int n) {
+    public int intersectaLado (Object objObjeto) {
         if (objObjeto instanceof Base) {
-            Rectangle rctEsteObjeto = new Rectangle(this.getX(), this.getY(),
+            Rectangle rctBrick = new Rectangle(this.getX(), this.getY(),
                     this.getAncho(), this.getAlto());
-            /*Solo tomar en cuenta a un pequeno rectangulo 
-                de la parte de abajo del objeto */
-            Base aniObjeto = (Base) objObjeto;
-            Rectangle rctObjetoParam = new Rectangle(aniObjeto.getX(),
-                    aniObjeto.getY(),
-                    aniObjeto.getAncho(), aniObjeto.getAlto() - 5);
-            return rctEsteObjeto.intersects(rctObjetoParam);
+
+            
+            Base basPelota = (Base) objObjeto;
+            Rectangle rctPelota = new Rectangle(basPelota.getX(),
+                    basPelota.getY(), basPelota.getAncho(), basPelota.getAlto());
+            
+            //Si hay interseccion, checar por que lado
+            if(rctBrick.intersects(rctPelota)){
+                Rectangle intersection = rctBrick.getBounds().intersection(rctPelota.getBounds());
+                
+                if (intersection.width >= intersection.height){ //interseccion vertical
+                    return 1;
+                }
+
+                else { //interseccion horizontal
+                    return 2;
+                }
+            }
+            else {
+                return 0;
+            }
         } 
         else {
-            return false;
+            return 0;
         }
     }
 }
