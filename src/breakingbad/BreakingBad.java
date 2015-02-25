@@ -12,13 +12,16 @@ import java.awt.Toolkit;
 import java.net.URL;
 import javax.swing.JFrame;
 import java.util.LinkedList;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  *
  * @author Patricio Sanchez and David Benítez 
  */
-public class BreakingBad extends JFrame implements Runnable {
+public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private boolean bVivo;
+    private boolean bPausa;
     private Base basBrick;
     private Base basPelota;
     private Base basGameOver;
@@ -28,9 +31,11 @@ public class BreakingBad extends JFrame implements Runnable {
     private Image    imaImagenApplet;   // Imagen a proyectar en Applet	
     private Graphics graGraficaApplet;  // Objeto grafico de la Imagen
     private LinkedList <Base> llsBricks;   //Linkedlist de bricks
+    private int iDireccion;
     
     public BreakingBad () {
         bVivo = true;
+        bPausa = true;
         
         // defino la imagen del brick
 	URL urlImagenBrick = this.getClass().getResource("bricks.gif");
@@ -60,6 +65,9 @@ public class BreakingBad extends JFrame implements Runnable {
         iPosY = 200;       
 	basPelota = new Base(iPosX, iPosY, 21, 22,
                 Toolkit.getDefaultToolkit().getImage(urlImagenPelota));
+        
+        //Inicializando el keylistener
+        addKeyListener(this);
         
         //Inicializacion del Hilo
         Thread th = new Thread (this);
@@ -183,6 +191,39 @@ public class BreakingBad extends JFrame implements Runnable {
                 //Da un mensaje mientras se carga el dibujo	
                 graDibujo.drawString("No se cargo la imagen..", 20, 20);
         }
+    }
+    
+    @Override
+    public void keyTyped(KeyEvent ke) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent ke) {
+
+        if (ke.getKeyCode() == KeyEvent.VK_A) {    //Presiono flecha izquierda
+            iDireccion = 1;
+        } 
+        else if (ke.getKeyCode() == KeyEvent.VK_D) {    //Presiono flecha derecha
+            iDireccion = 2;
+        }
+        
+        //Al presionar ESC se sale del juego
+        if (ke.getKeyCode() == KeyEvent.VK_ESCAPE){
+            bVivo = false;
+        }
+        
+        //Al presionar P se pausa el juego
+        if (ke.getKeyCode() == KeyEvent.VK_P){
+            bPausa = !bPausa;
+        }
+        
+
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent ke) {    
     }
     
     /**
