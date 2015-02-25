@@ -24,6 +24,7 @@ public class Base {
     private int iAlto; //largo del objeto
     private Image imaImagen;	//imagen.
     private ImageIcon imiIcono; //Image icon del objeto
+    private Animacion aniAnima; //Animacion del Objeto
 
     /**
      * Base
@@ -44,6 +45,27 @@ public class Base {
         this.iAncho = iAncho;
         this.iAlto = iAlto;
         this.imaImagen = imaImagen;
+    }
+    
+    /**
+     * Base
+     * 
+     * Metodo constructor usado para crear el objeto base
+     * creando el icono a partir de una animacion
+     * 
+     * @param iX es la <code>posicion en x</code> del objeto.
+     * @param iY es la <code>posicion en y</code> del objeto.
+     * @param iAncho es el <code>ancho</code> del objeto.
+     * @param iAlto es el <code>Largo</code> del objeto.
+     * @param aniAnima es la <code>animacion</code> del objeto.
+     * 
+     */
+    public Base(int iX, int iY , int iAncho, int iAlto,Animacion aniAnima) {
+        this.iX = iX;
+        this.iY = iY;
+        this.iAncho = iAncho;
+        this.iAlto = iAlto;
+        this.aniAnima = aniAnima;
     }
 
     
@@ -119,6 +141,19 @@ public class Base {
     public Image getImagen() {
         return imaImagen;
     }
+    
+        /**
+     * getAnimacion
+     * 
+     * Metodo de acceso que regresa la animacion 
+     * que representa el icono del objeto
+     * 
+     * @return la imagen a partir de del <code>icono</code> del objeto.
+     * 
+     */
+    public Animacion getAnimacion() {
+        return aniAnima;
+    }
 
     /**
      * getAncho
@@ -147,7 +182,7 @@ public class Base {
     /**
      * paint
      * 
-     * Metodo para pintar el animal
+     * Metodo para pintar la base
      * 
      * @param graGrafico    objeto de la clase <code>Graphics</code> para graficar
      * @param imoObserver  objeto de la clase <code>ImageObserver</code> es el 
@@ -156,6 +191,21 @@ public class Base {
      */
     public void paint(Graphics graGrafico, ImageObserver imoObserver) {
         graGrafico.drawImage(getImagen(), getX(), getY(), getAncho(), getAlto(), imoObserver);
+    }
+    
+        /**
+     * paint 2
+     * 
+     * Metodo para pintar la base con animacion
+     * 
+     * @param graGrafico    objeto de la clase <code>Graphics</code> para graficar
+     * @param imoObserver  objeto de la clase <code>ImageObserver</code> es el 
+     *    Applet donde se pintara
+     * 
+     */
+    public void paint2(Graphics graGrafico, ImageObserver imoObserver) {
+        graGrafico.drawImage(aniAnima.getImagen(), getX(), getY(), 
+                getAncho(), getAlto(), imoObserver);
     }
 
     /**
@@ -197,6 +247,15 @@ public class Base {
     public String toString() {
         return " x: " + this.getX() + " y: "+ this.getY() +
                 " ancho: " + this.getAncho() + " alto: " + this.getAlto();
+    }
+    
+    /* actualiza
+    *   
+    *   Metodo que actualiza la imagen del objeto
+    *   @param lTiempo es una long con el tiempo transcurrido
+    */
+    public void actualiza (long lTiempo){
+        aniAnima.actualiza(lTiempo);
     }
     
     /*

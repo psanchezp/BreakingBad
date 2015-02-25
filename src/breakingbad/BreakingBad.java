@@ -88,10 +88,6 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         iPosX = 200;
         iPosY = 530;
         
-        // defino la imagen de la barra
-	URL urlImagenBarra = this.getClass().getResource("barra.gif");
-        basBarra = new Base(iPosX, iPosY, 90, 55,
-                Toolkit.getDefaultToolkit().getImage(urlImagenBarra));
         
         //Se crean vidas
         llsVidas = new LinkedList <Base> ();
@@ -105,12 +101,12 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             iPosX += 32;
         }
         
-<<<<<<< HEAD
+
         //Creando game over
         URL urlImagenGameOver = this.getClass().getResource("game-over.gif");
         basGameOver = new Base (200, 200, 450/2, 600/2, 
             Toolkit.getDefaultToolkit().getImage(urlImagenGameOver));
-=======
+
         //Inicializando Animacion
         animBarra = new Animacion();
         Image imaBarra1 = Toolkit.getDefaultToolkit().getImage(
@@ -124,7 +120,10 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         animBarra.sumaCuadro(imaBarra2, 5000);
         animBarra.sumaCuadro(imaBarra1, 5000);
         animBarra.sumaCuadro(imaBarra3, 5000);
->>>>>>> origin/master
+        
+        //Inicializando la Barra
+        basBarra = new Base(iPosX, iPosY, 90, 55, animBarra);
+
         
         //Inicializando el keylistener
         addKeyListener(this);
@@ -178,12 +177,12 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         else if(iDireccion == 2) {
             basBarra.setX(basBarra.getX() + 2);
         }
-        
-<<<<<<< HEAD
+
         long lTiempo2 = System.currentTimeMillis() - lTiempo;
         lTiempo = lTiempo + lTiempo2;
-        animBarra.actualiza(lTiempo);
-=======
+        //animBarra.actualiza(lTiempo);
+        basBarra.actualiza(lTiempo);
+
         if(iDireccionXpelota == 1) { //Izquierda
            basPelota.setX(basPelota.getX() - 2); 
         }
@@ -197,7 +196,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             basPelota.setY(basPelota.getY() - 2);
         }
 
->>>>>>> origin/master
+
     }
     
     /**
@@ -302,13 +301,13 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 basPelota.paint(graDibujo, this);
                 
                 //Dibuja la barra
-                basBarra.paint(graDibujo, this);
+                basBarra.paint2(graDibujo, this);
                 
                 for(Base basVidas : llsVidas){
                         basVidas.paint(graDibujo, this);
                 }
                 
-                graDibujo.drawImage(animBarra.getImagen(), 300, 300, this);
+                //graDibujo.drawImage(animBarra.getImagen(), 300, 300, this);
 
                 //Puntos y vidas desplegados en la esquina superior izquierda
                 //graDibujo.setColor(Color.red);
