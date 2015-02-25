@@ -90,8 +90,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         llsVidas = new LinkedList <Base> ();
         iPosX = 10;
         URL urlImagenVidas = this.getClass().getResource("heisenberg.gif");
-        for(int i = 0; i < 3; i++) {
-            basVidas = new Base(iPosX, 30, 30, 30,
+        for(int i = 0; i < iVidas; i++) {
+            basVidas = new Base(iPosX, 27, 30, 30,
             Toolkit.getDefaultToolkit().getImage(urlImagenVidas));
             
             llsVidas.add(basVidas);
@@ -140,7 +140,13 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
      * Metodo que actualiza la posicion de los objetos 
      * 
      */
-    public void actualiza (){
+    public void actualiza () {
+        if(iDireccion == 1) {
+            basBarra.setX(basBarra.getX() - 2);
+        }
+        else if(iDireccion == 2) {
+            basBarra.setX(basBarra.getX() + 2);
+        }
 
     }
     
@@ -240,10 +246,10 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent ke) {
 
-        if (ke.getKeyCode() == KeyEvent.VK_A) {    //Presiono flecha izquierda
+        if (ke.getKeyCode() == KeyEvent.VK_LEFT) {    //Presiono flecha izquierda
             iDireccion = 1;
         } 
-        else if (ke.getKeyCode() == KeyEvent.VK_D) {    //Presiono flecha derecha
+        else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
             iDireccion = 2;
         }
         
@@ -262,7 +268,13 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent ke) {    
+    public void keyReleased(KeyEvent ke) {
+       if (ke.getKeyCode() == KeyEvent.VK_LEFT) {    //Presiono flecha izquierda
+            iDireccion = 0;
+        } 
+        else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
+            iDireccion = 0;
+        }
     }
     
     /**
