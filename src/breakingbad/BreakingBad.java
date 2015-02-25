@@ -180,7 +180,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         }
 
         // Actualiza la imagen de fondo.
-        URL urlImagenFondo = this.getClass().getResource("background.gif");
+        URL urlImagenFondo = this.getClass().getResource("background2.gif");
         Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
          graGraficaApplet.drawImage(imaImagenFondo, 0, 0, iWidth, iHeight, this);
 
