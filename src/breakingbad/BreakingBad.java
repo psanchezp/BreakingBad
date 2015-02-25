@@ -249,11 +249,37 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         
         //Colision pelota con brick
         for(Base basBrick : llsBricks){
-            if(basBrick.intersecta(basPelota)) {
-                iScore++;
-                sndSonidoBrick.play();
-                llsBricks.remove(basBrick);
-                break; //NECESARIO para evitar un exception
+            if(basBrick.intersectaLado(basPelota) == 1) {
+                if(iDireccionYpelota == 3) {
+                    iDireccionYpelota = 4;
+                    iScore++;
+                    sndSonidoBrick.play();
+                    llsBricks.remove(basBrick);
+                    break; //NECESARIO para evitar un exception
+                }
+                else if(iDireccionYpelota == 4) {
+                    iDireccionYpelota = 3;
+                    iScore++;
+                    sndSonidoBrick.play();
+                    llsBricks.remove(basBrick);
+                    break; //NECESARIO para evitar un exception
+                }
+            }
+            else if(basBrick.intersectaLado(basPelota) == 2) {
+                if(iDireccionXpelota == 1) {
+                    iDireccionXpelota = 2;
+                    iScore++;
+                    sndSonidoBrick.play();
+                    llsBricks.remove(basBrick);
+                    break; //NECESARIO para evitar un exception
+                }
+                else if(iDireccionXpelota == 2) {
+                    iDireccionXpelota = 1;
+                    iScore++;
+                    sndSonidoBrick.play();
+                    llsBricks.remove(basBrick);
+                    break; //NECESARIO para evitar un exception
+                }
             }
         }
 
