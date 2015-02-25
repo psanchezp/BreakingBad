@@ -224,10 +224,11 @@ public class Base {
     /*
      * intersecta 2
      *
-     * Metodo que checa si un objeto espacial intersecta a otro por arriba
+     * Metodo que checa si un objeto intersecta con otro del mismo tipo, y regresa
+     * si fue vertical u horizontal
      *
      * @param objObjeto es un objeto de la clase <code>Object</code>
-     * @return un boleano para saber si intersecta o no
+     * @return un int para saber si intersecta o no, y por donde fue
      */
     public int intersectaLado (Object objObjeto) {
         if (objObjeto instanceof Base) {

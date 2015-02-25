@@ -28,7 +28,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private Base basPelota; //objeto para la pelota
     private Base basGameOver; //
     private Base basVidas; //
-    private Base basBarra;
+    private Base basBarra; //
     private static final int iWidth = 450; //ancho de la pantalla
     private static final int iHeight = 600; //alto de la pantalla
     /* objetos para manejar el buffer del Applet y este no parpadee */
@@ -41,14 +41,19 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private int iVidas;  //vidas del jugador
     private int iDireccionYpelota; //Direccion en Y de la pelota
     private int iDireccionXpelota; //Direccion en X de la pelota
-    private int iScore;
-    Animacion animBarra;
+    private int iScore; //Score del juego
+    private int iVelPelota; //Velocidad de la pelota
+    private int iBricks; //cantidad de bricks en el juego
+    Animacion animBarra; 
     long lTiempo;
     
     public BreakingBad () {
         bVivo = true; //El jugador tiene vidas
         bPausa = false; //No está en pausa
         iVidas = 3;
+        
+        iVelPelota = 1;
+        iBricks = 0;
         
         //Se define sonido del brick
         sndSonidoBrick = new SoundClip("dinero.wav");
@@ -68,6 +73,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                     Toolkit.getDefaultToolkit().getImage(urlImagenBrick));
                 
                 llsBricks.add(basBrick);
+                
+                iBricks++;
                 
                 iPosX += 50;
             }
@@ -183,16 +190,16 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         animBarra.actualiza(lTiempo);
         
         if(iDireccionXpelota == 1) { //Izquierda
-           basPelota.setX(basPelota.getX() - 2); 
+           basPelota.setX(basPelota.getX() - (1 + iVelPelota)); 
         }
         if(iDireccionXpelota == 2) { //Derecha
-            basPelota.setX(basPelota.getX() + 2);
+            basPelota.setX(basPelota.getX() + (1 + iVelPelota));
         }
         if(iDireccionYpelota == 3) { //Abajo
-           basPelota.setY(basPelota.getY() + 2); 
+           basPelota.setY(basPelota.getY() + (1 + iVelPelota)); 
         }
         if(iDireccionYpelota == 4) { //Arriba
-            basPelota.setY(basPelota.getY() - 2);
+            basPelota.setY(basPelota.getY() - (1 + iVelPelota));
         }
     }
     
@@ -255,6 +262,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                     iScore++;
                     sndSonidoBrick.play();
                     llsBricks.remove(basBrick);
+                    iBricks--;
                     break; //NECESARIO para evitar un exception
                 }
                 else if(iDireccionYpelota == 4) {
@@ -262,6 +270,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                     iScore++;
                     sndSonidoBrick.play();
                     llsBricks.remove(basBrick);
+                    iBricks--;
                     break; //NECESARIO para evitar un exception
                 }
             }
@@ -271,6 +280,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                     iScore++;
                     sndSonidoBrick.play();
                     llsBricks.remove(basBrick);
+                    iBricks--;
                     break; //NECESARIO para evitar un exception
                 }
                 else if(iDireccionXpelota == 2) {
@@ -278,10 +288,23 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                     iScore++;
                     sndSonidoBrick.play();
                     llsBricks.remove(basBrick);
+                    iBricks--;
                     break; //NECESARIO para evitar un exception
                 }
             }
         }
+        
+        //se aumenta velocidad de la pelota dependiendo de los bricks
+        if(iBricks > 19 && iBricks < 31) {
+            iVelPelota = 2;
+        }
+        if(iBricks > 9 && iBricks < 21) {
+            iVelPelota = 3;
+        }
+        if(iBricks < 10) {
+            iVelPelota = 4;
+        }
+        
 
     }
     
@@ -350,7 +373,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                     basVidas.paint(graDibujo, this);
                 }
                 
-                graDibujo.drawImage(animBarra.getImagen(), 300, 300, this);
+                //animacion barra
+                //graDibujo.drawImage(animBarra.getImagen(), 300, 300, this);
 
                 //Puntos desplegados en la esquina superior izquierda
                 graDibujo.setFont(new Font("Arial", Font.PLAIN, 17));
