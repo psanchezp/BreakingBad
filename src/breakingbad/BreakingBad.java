@@ -14,39 +14,48 @@ import javax.swing.JFrame;
 import java.util.LinkedList;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 /**
  *
  * @author Patricio Sanchez and David Benítez 
  */
 public class BreakingBad extends JFrame implements Runnable, KeyListener {
-    private boolean bVivo;
-    private boolean bPausa;
-    private Base basBrick;
-    private Base basPelota;
-    private Base basGameOver;
-    private static final int iWidth = 800; //ancho de la pantalla
-    private static final int iHeight = 500; //alto de la pantalla
+    private boolean bVivo; //el jugador tiene vidas
+    private boolean bPausa; //el juego esta en pausa
+    private Base basBrick; //objeto para los bricks
+    private Base basPelota; //objeto para la pelota
+    private Base basGameOver; //
+    private static final int iWidth = 450; //ancho de la pantalla
+    private static final int iHeight = 600; //alto de la pantalla
     /* objetos para manejar el buffer del Applet y este no parpadee */
     private Image    imaImagenApplet;   // Imagen a proyectar en Applet	
     private Graphics graGraficaApplet;  // Objeto grafico de la Imagen
+    private SoundClip sndSonidoBrick;   // Objeto sonido del brick
     private LinkedList <Base> llsBricks;   //Linkedlist de bricks
-    private int iDireccion;
+    private int iDireccion; //direccion de la pelota
+    private int iVidas;  //vidas del jugador
+    public BufferedImage imgVidas;
     
     public BreakingBad () {
-        bVivo = true;
-        bPausa = true;
+        bVivo = true; //El jugador tiene vidas
+        bPausa = false; //No está en pausa
+        iVidas = 3;
+        
+        //Se define sonido del brick
+        sndSonidoBrick = new SoundClip("dinero.wav");
         
         // defino la imagen del brick
 	URL urlImagenBrick = this.getClass().getResource("bricks.gif");
         llsBricks = new LinkedList <Base> ();
         
         int iPosX;
-        int iPosY = 25;   
+        int iPosY = 55;   
         
+        //Se crean los bricks en forma de matriz
         for (int iI = 0; iI < 5; iI++) {
-            iPosX = 22;
-            for(int iJ = 0; iJ < 15; iJ++) {
+            iPosX = 24;
+            for(int iJ = 0; iJ < 8; iJ++) {
                 basBrick = new Base(iPosX, iPosY, 49, 30,
                     Toolkit.getDefaultToolkit().getImage(urlImagenBrick));
                 
@@ -142,7 +151,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         }
 
         // Actualiza la imagen de fondo.
-        URL urlImagenFondo = this.getClass().getResource("Ciudad.png");
+        URL urlImagenFondo = this.getClass().getResource("background.gif");
         Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
          graGraficaApplet.drawImage(imaImagenFondo, 0, 0, iWidth, iHeight, this);
 
@@ -177,6 +186,10 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 
                 //Dibuja la imagen de la pelota en el Applet
                 basPelota.paint(graDibujo, this);
+                
+                for(int i = 0; i < iVidas; i++) {
+                    
+                }
 
                 //Puntos y vidas desplegados en la esquina superior izquierda
                 //graDibujo.setColor(Color.red);
