@@ -40,7 +40,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private int iVidas;  //vidas del jugador
     private int iDireccionYpelota; //Direccion en Y de la pelota
     private int iDireccionXpelota; //Direccion en X de la pelota
-    public BufferedImage imgVidas;
+    private int iScore;
     Animacion animBarra;
     long lTiempo;
     
@@ -105,12 +105,11 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             iPosX += 32;
         }
         
-<<<<<<< HEAD
         //Creando game over
         URL urlImagenGameOver = this.getClass().getResource("game-over.gif");
         basGameOver = new Base (200, 200, 450/2, 600/2, 
             Toolkit.getDefaultToolkit().getImage(urlImagenGameOver));
-=======
+        
         //Inicializando Animacion
         animBarra = new Animacion();
         Image imaBarra1 = Toolkit.getDefaultToolkit().getImage(
@@ -124,7 +123,6 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         animBarra.sumaCuadro(imaBarra2, 5000);
         animBarra.sumaCuadro(imaBarra1, 5000);
         animBarra.sumaCuadro(imaBarra3, 5000);
->>>>>>> origin/master
         
         //Inicializando el keylistener
         addKeyListener(this);
@@ -179,11 +177,10 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             basBarra.setX(basBarra.getX() + 2);
         }
         
-<<<<<<< HEAD
         long lTiempo2 = System.currentTimeMillis() - lTiempo;
         lTiempo = lTiempo + lTiempo2;
         animBarra.actualiza(lTiempo);
-=======
+        
         if(iDireccionXpelota == 1) { //Izquierda
            basPelota.setX(basPelota.getX() - 2); 
         }
@@ -196,8 +193,6 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         if(iDireccionYpelota == 4) { //Arriba
             basPelota.setY(basPelota.getY() - 2);
         }
-
->>>>>>> origin/master
     }
     
     /**
@@ -241,6 +236,15 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             }
             
             iDireccionYpelota = 4;
+        }
+        
+        //Colision pelota con brick
+        for(Base basBrick : llsBricks){
+            if(basBrick.intersecta(basPelota)) {
+                iScore++;
+                llsBricks.remove(basBrick);
+                break;
+            }
         }
 
     }
@@ -305,7 +309,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 basBarra.paint(graDibujo, this);
                 
                 for(Base basVidas : llsVidas){
-                        basVidas.paint(graDibujo, this);
+                    basVidas.paint(graDibujo, this);
                 }
                 
                 graDibujo.drawImage(animBarra.getImagen(), 300, 300, this);
@@ -349,9 +353,6 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         if (ke.getKeyCode() == KeyEvent.VK_P){
             bPausa = !bPausa;
         }
-        
-
-
     }
 
     @Override
