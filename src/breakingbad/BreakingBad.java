@@ -103,6 +103,11 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             iPosX += 32;
         }
         
+        //Creando game over
+        URL urlImagenGameOver = this.getClass().getResource("game-over.gif");
+        basGameOver = new Base (200, 200, 450/2, 600/2, 
+            Toolkit.getDefaultToolkit().getImage(urlImagenGameOver));
+        
         //Inicializando el keylistener
         addKeyListener(this);
         
@@ -177,22 +182,40 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
      * 
      */
     public void checaColision () {
-        if(basPelota.getX() <= 0) {
+        //Colisiones de la pelota con la pared
+        if(basPelota.getX() <= 0) { //Si choca con la izq
             iDireccionXpelota = 2;
         }
-        if(basPelota.getX() + basPelota.getAncho() >= iWidth) {
+        if(basPelota.getX() + basPelota.getAncho() >= iWidth) { //Si choca derecha
             iDireccionXpelota = 1;
         }
-        if(basPelota.getY() <= 0) {
+        if(basPelota.getY() <= 30) { //Si choca arriba
             iDireccionYpelota = 3;
         }
-        if(basPelota.getY() > iHeight) {
-            llsVidas.removeLast();
+        if(basPelota.getY() > iHeight) { //Si choca abajo
+            if(iVidas == 1) {
+                bVivo = !bVivo;
+            }
+            else {
+                iVidas--;
+                llsVidas.removeLast();
+            }
             basPelota.setX(200);
             basPelota.setY(250);
             iDireccionYpelota = 3; //Empieza hacia abajo
-            iDireccionXpelota = (int) (Math.random() * 2) + 1; //Izq o derecha
-                   
+            iDireccionXpelota = (int) (Math.random() * 2) + 1; //Izq o derecha          
+        }
+        
+        //Colision pelota con la barra
+        if(basPelota.intersecta(basBarra)) {
+            if(iDireccionXpelota == 1) {
+                iDireccionXpelota = 2;
+            }
+            else if(iDireccionXpelota == 2) {
+                iDireccionXpelota = 1;
+            }
+            
+            iDireccionYpelota = 4;
         }
 
     }
