@@ -26,7 +26,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private Base basBrick; //objeto para los bricks
     private Base basPelota; //objeto para la pelota
     private Base basGameOver; //
-    private Base basVidas;
+    private Base basVidas; //
+    private Base basBarra;
     private static final int iWidth = 450; //ancho de la pantalla
     private static final int iHeight = 600; //alto de la pantalla
     /* objetos para manejar el buffer del Applet y este no parpadee */
@@ -73,10 +74,19 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         
         // se crea el objeto para la pelota
         iPosX = 200;
-        iPosY = 200;       
+        iPosY = 450;       
 	basPelota = new Base(iPosX, iPosY, 21, 22,
                 Toolkit.getDefaultToolkit().getImage(urlImagenPelota));
         
+        iPosX = 200;
+        iPosY = 500;
+        
+        // defino la imagen de la pelota
+	URL urlImagenBarra = this.getClass().getResource("barra.gif");
+        basBarra = new Base(iPosX, iPosY, 90, 55,
+                Toolkit.getDefaultToolkit().getImage(urlImagenBarra));
+        
+        //Se crean vidas
         llsVidas = new LinkedList <Base> ();
         iPosX = 10;
         URL urlImagenVidas = this.getClass().getResource("heisenberg.gif");
@@ -189,7 +199,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
      */
     public void paint1 (Graphics graDibujo) {
         // si la imagen ya se cargo
-        if (llsBricks != null && basPelota != null) {
+        if (llsBricks != null && basPelota != null && basBarra != null) {
             if (bVivo){
                 
                 //Dibuja la imagen del brick en el Applet
@@ -199,6 +209,9 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 
                 //Dibuja la imagen de la pelota en el Applet
                 basPelota.paint(graDibujo, this);
+                
+                //Dibuja la barra
+                basBarra.paint(graDibujo, this);
                 
                 for(Base basVidas : llsVidas){
                         basVidas.paint(graDibujo, this);
