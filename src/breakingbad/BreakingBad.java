@@ -60,6 +60,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         
         iVidas = 3;
         
+        iScore = 0;
         iVelPelota = 1;
         iBricks = 0;
         
@@ -151,6 +152,80 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         th.start();
     }
     
+    /*
+    *   Metodo Restart
+    *   Reinicia todos los valores del juego
+    */
+    public void restart(){
+        if (bFinal || bLose){
+            bVivo = false; //El juego todavia no comienza
+            bPausa = false; //No está en pausa
+            bInicio = true; //El juego esta en la pantalla de inicio
+            bFinal = false; //No se ha ganado el juego
+            bLose = false;
+
+            iVidas = 3;
+            iScore = 0;
+            iVelPelota = 1;
+            iBricks = 0;
+            
+            // defino la imagen del brick
+            URL urlImagenBrick = this.getClass().getResource("bricks.gif");
+            llsBricks = new LinkedList <Base> ();
+
+            int iPosX;
+            int iPosY = 65;   
+
+            //Se crean los bricks en forma de matriz
+            for (int iI = 0; iI < 5; iI++) {
+                iPosX = 24;
+                for(int iJ = 0; iJ < 8; iJ++) {
+                    basBrick = new Base(iPosX, iPosY, 49, 30,
+                        Toolkit.getDefaultToolkit().getImage(urlImagenBrick));
+
+                    llsBricks.add(basBrick);
+
+                    iBricks++;
+
+                    iPosX += 50;
+                }
+                iPosY += 31;
+            }
+
+            iDireccionYpelota = 3; //Empieza hacia abajo
+            iDireccionXpelota = (int) (Math.random() * 2) + 1; //Izq o derecha
+
+            // defino la imagen de la pelota
+            URL urlImagenPelota = this.getClass().getResource("pill.gif");
+
+            // se crea el objeto para la pelota
+            iPosX = 200;
+            iPosY = 250;       
+            basPelota = new Base(iPosX, iPosY, 21, 22,
+                    Toolkit.getDefaultToolkit().getImage(urlImagenPelota));
+
+            iPosX = 200;
+            iPosY = 530;
+
+
+            //Se crean vidas
+            llsVidas = new LinkedList <Base> ();
+            iPosX = 10;
+            URL urlImagenVidas = this.getClass().getResource("heisenberg.gif");
+            for(int i = 0; i < iVidas; i++) {
+                basVidas = new Base(iPosX, 27, 30, 30,
+                Toolkit.getDefaultToolkit().getImage(urlImagenVidas));
+
+                llsVidas.add(basVidas);
+                iPosX += 32;
+            }
+
+            //Inicializando el booleano de movimiento
+            bMover = false;
+
+        }
+    }
+    
     /** 
      * run
      * 
@@ -238,11 +313,12 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         }
         if(basPelota.getY() > iHeight) { //Si choca abajo
             if(iVidas == 1) {
+                iVidas --;
                 bVivo = !bVivo;
                 bLose = true;
             }
             else {
-                iVidas--;
+                iVidas --;
                 llsVidas.removeLast();
             }
             basPelota.setX(200);
@@ -444,8 +520,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         }
         
         if (ke.getKeyCode() == KeyEvent.VK_R){
-            bVivo = true;
-            iVidas = 3;
+            restart ();
         }
         
         if (ke.getKeyCode() == KeyEvent.VK_S && !bFinal){
