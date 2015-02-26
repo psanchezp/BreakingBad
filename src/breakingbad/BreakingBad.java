@@ -38,6 +38,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private Image    imaImagenApplet;   // Imagen a proyectar en Applet	
     private Graphics graGraficaApplet;  // Objeto grafico de la Imagen
     private SoundClip sndSonidoBrick;   // Objeto sonido del brick
+    private SoundClip sndSonidoFondo; //Objeto sonido de fondo
     private LinkedList <Base> llsBricks;   //Linkedlist de bricks
     private LinkedList <Base> llsVidas;   //Linkedlist de vidas
     private int iDireccion; //direccion de la barra
@@ -66,6 +67,12 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         
         //Se define sonido del brick
         sndSonidoBrick = new SoundClip("dinero.wav");
+        
+        //Se define sonido de fondo
+        sndSonidoFondo = new SoundClip("cancionBCK.wav");
+        sndSonidoFondo.setLooping(true);
+        sndSonidoFondo.setRepeat(20);
+        sndSonidoFondo.play();
         
         // defino la imagen del brick
 	URL urlImagenBrick = this.getClass().getResource("bricks.gif");
@@ -137,7 +144,6 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         animBarra.sumaCuadro(imaBarra1, 5000);
         animBarra.sumaCuadro(imaBarra3, 5000);
 
-        
         //Inicializando la Barra
         basBarra = new Base(iPosX, iPosY, 90, 55, animBarra);
 
@@ -152,10 +158,10 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         th.start();
     }
     
-    /*
+    /**
     *   Metodo Restart
     *   Reinicia todos los valores del juego
-    */
+    **/
     public void restart(){
         if (bFinal || bLose){
             bVivo = true; //El juego todavia no comienza
@@ -332,11 +338,15 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         
         //Colision pelota con la barra
         if(basPelota.intersecta(basBarra)) {
-            if(iDireccionXpelota == 1) {
-                iDireccionXpelota = 2;
+            if(iDireccionXpelota == 1){ //Si se mueve a la izq
+                if ((basPelota.getX() + 10) > (basBarra.getX() + 45)) { //pega en la derecha
+                    iDireccionXpelota = 2; //cambia a derecha
+                }
             }
-            else if(iDireccionXpelota == 2) {
-                iDireccionXpelota = 1;
+            else if(iDireccionXpelota == 2) { //Si se mueve a la derecha
+                if ((basPelota.getX() + 10) < (basBarra.getX() + 45)) { //pega en la izq
+                    iDireccionXpelota = 1; //cambia a izq
+                }
             }
             
             iDireccionYpelota = 4;
