@@ -158,9 +158,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     */
     public void restart(){
         if (bFinal || bLose){
-            bVivo = false; //El juego todavia no comienza
+            bVivo = true; //El juego todavia no comienza
             bPausa = false; //No está en pausa
-            bInicio = true; //El juego esta en la pantalla de inicio
             bFinal = false; //No se ha ganado el juego
             bLose = false;
 
@@ -241,7 +240,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         */ 
         lTiempo = System.currentTimeMillis();
         while (true) {
-            if (!bPausa) {
+            if (!bPausa && !bInicio) {
                 actualiza();
                 checaColision();
             }
@@ -516,7 +515,9 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         
         //Al presionar P se pausa el juego
         if (ke.getKeyCode() == KeyEvent.VK_P){
-            bPausa = !bPausa;
+            if (!bInicio){
+              bPausa = !bPausa;  
+            }
         }
         
         if (ke.getKeyCode() == KeyEvent.VK_R){
