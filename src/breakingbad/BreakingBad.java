@@ -445,6 +445,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         
         if (ke.getKeyCode() == KeyEvent.VK_R){
             bVivo = true;
+            iVidas = 3;
         }
         
         if (ke.getKeyCode() == KeyEvent.VK_S && !bFinal){
