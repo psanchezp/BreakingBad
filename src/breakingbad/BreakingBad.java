@@ -24,6 +24,9 @@ import java.awt.image.BufferedImage;
 public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private boolean bVivo; //el jugador tiene vidas
     private boolean bPausa; //el juego esta en pausa
+    private boolean bInicio; //el juego no ha empezado
+    private boolean bFinal; //ganaste el juego
+    private boolean bLose; //perdiste
     private Base basBrick; //objeto para los bricks
     private Base basPelota; //objeto para la pelota
     private Base basGameOver; //
@@ -49,8 +52,12 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private boolean bMover; //Determinar si esta en movimiento
     
     public BreakingBad () {
-        bVivo = true; //El jugador tiene vidas
+        bVivo = false; //El juego todavia no comienza
         bPausa = false; //No está en pausa
+        bInicio = true; //El juego esta en la pantalla de inicio
+        bFinal = false; //No se ha ganado el juego
+        bLose = false;
+        
         iVidas = 3;
         
         iVelPelota = 1;
@@ -205,6 +212,10 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         if(iDireccionYpelota == 4) { //Arriba
             basPelota.setY(basPelota.getY() - (1 + iVelPelota));
         }
+        
+        if (iBricks == 0){
+            bFinal = true;
+        }
 
     }
     
@@ -228,6 +239,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         if(basPelota.getY() > iHeight) { //Si choca abajo
             if(iVidas == 1) {
                 bVivo = !bVivo;
+                bLose = true;
             }
             else {
                 iVidas--;
@@ -333,9 +345,11 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         }
 
         // Actualiza la imagen de fondo.
-        URL urlImagenFondo = this.getClass().getResource("background2.gif");
+        URL urlImagenFondo;
+        urlImagenFondo = this.getClass().getResource("title.gif");
         Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
-         graGraficaApplet.drawImage(imaImagenFondo, 0, 0, iWidth, iHeight, this);
+        graGraficaApplet.drawImage(imaImagenFondo, 0, 0, iWidth, iHeight, this);
+        
 
         // Actualiza el Foreground.
         graGraficaApplet.setColor (getForeground());
@@ -361,6 +375,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         if (llsBricks != null && basPelota != null && basBarra != null 
                 && llsVidas != null) {
             if (bVivo){
+                graDibujo.drawImage(Toolkit.getDefaultToolkit().getImage(
+                        this.getClass().getResource("background2.gif")),0,0,this);
                 
                 //Dibuja la imagen del brick en el Applet
                 for(Base basBrick : llsBricks){
@@ -383,8 +399,13 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 graDibujo.setColor(Color.red);
                 graDibujo.drawString("Puntos: " + iScore, 340, 45);
             }
-            else{
-                basGameOver.paint(graDibujo, this);
+            else if (bFinal){
+                graDibujo.drawImage(Toolkit.getDefaultToolkit().getImage(
+                        this.getClass().getResource("win.gif")),0,0,this);
+            }
+            else if (bLose) {
+                graDibujo.drawImage(Toolkit.getDefaultToolkit().getImage(
+                        this.getClass().getResource("gameover.gif")),0,0,this);
             }
         } // sino se ha cargado se dibuja un mensaje 
         else {
@@ -413,12 +434,24 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         //Al presionar ESC se sale del juego
         if (ke.getKeyCode() == KeyEvent.VK_ESCAPE){
             bVivo = false;
+            bFinal = false;
+            bLose = true;
         }
         
         //Al presionar P se pausa el juego
         if (ke.getKeyCode() == KeyEvent.VK_P){
             bPausa = !bPausa;
         }
+        
+        if (ke.getKeyCode() == KeyEvent.VK_R){
+            bVivo = true;
+        }
+        
+        if (ke.getKeyCode() == KeyEvent.VK_S && !bFinal){
+            bInicio = false;
+            bVivo = true;
+        }
+        
     }
 
     @Override
