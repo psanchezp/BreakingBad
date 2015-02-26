@@ -39,6 +39,8 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     private Graphics graGraficaApplet;  // Objeto grafico de la Imagen
     private SoundClip sndSonidoBrick;   // Objeto sonido del brick
     private SoundClip sndSonidoFondo; //Objeto sonido de fondo
+    private SoundClip sndSonidoBreak; //Objeto sonido de cristal rompiendose
+    private SoundClip sndSonidoIntro; //Objeto sonido de intro
     private LinkedList <Base> llsBricks;   //Linkedlist de bricks
     private LinkedList <Base> llsVidas;   //Linkedlist de vidas
     private int iDireccion; //direccion de la barra
@@ -68,11 +70,13 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         //Se define sonido del brick
         sndSonidoBrick = new SoundClip("dinero.wav");
         
-        //Se define sonido de fondo
-        sndSonidoFondo = new SoundClip("cancionBCK.wav");
-        sndSonidoFondo.setLooping(true);
-        sndSonidoFondo.setRepeat(20);
-        sndSonidoFondo.play();
+        //Se define sonido del cristal
+        sndSonidoBreak = new SoundClip("break.wav");
+        
+        //Se define sonido de intro
+        sndSonidoIntro = new SoundClip("intro.wav");
+        sndSonidoIntro.setLooping(true);
+        sndSonidoIntro.play();
         
         // defino la imagen del brick
 	URL urlImagenBrick = this.getClass().getResource("bricks.gif");
@@ -164,6 +168,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
     **/
     public void restart(){
         if (bFinal || bLose){
+        
             bVivo = true; //El juego todavia no comienza
             bPausa = false; //No está en pausa
             bFinal = false; //No se ha ganado el juego
@@ -322,6 +327,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 iVidas --;
                 llsVidas.removeLast();
             }
+            sndSonidoBreak.play();
             basPelota.setX(200);
             basPelota.setY(240);
             iDireccionYpelota = 3; //Empieza hacia abajo
@@ -464,6 +470,11 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 graDibujo.drawImage(Toolkit.getDefaultToolkit().getImage(
                         this.getClass().getResource("background2.gif")),0,0,this);
                 
+                //Puntos desplegados en la esquina superior izquierda
+                graDibujo.setFont(new Font("Arial", Font.PLAIN, 17));
+                graDibujo.setColor(Color.red);
+                graDibujo.drawString("Puntos: " + iScore, 340, 45);
+                
                 //Dibuja la imagen del brick en el Applet
                 for(Base basBrick : llsBricks){
                         basBrick.paint(graDibujo, this);
@@ -479,11 +490,6 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 for(Base basVidas : llsVidas){
                     basVidas.paint(graDibujo, this);
                 }
-
-                //Puntos desplegados en la esquina superior izquierda
-                graDibujo.setFont(new Font("Arial", Font.PLAIN, 17));
-                graDibujo.setColor(Color.red);
-                graDibujo.drawString("Puntos: " + iScore, 340, 45);
             }
             else if (bFinal){
                 graDibujo.drawImage(Toolkit.getDefaultToolkit().getImage(
@@ -512,7 +518,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             iDireccion = 1;
             bMover = true;
         } 
-        else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
+        else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) { //Presiono flecha derecha
             iDireccion = 2;
             bMover = true;
         }
@@ -538,6 +544,14 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         if (ke.getKeyCode() == KeyEvent.VK_S && !bFinal){
             bInicio = false;
             bVivo = true;
+            
+            //Se para sonido de intro
+            sndSonidoIntro.stop();
+            
+            //Se define sonido de fondo
+            sndSonidoFondo = new SoundClip("fondo.wav");
+            sndSonidoFondo.setLooping(true);
+            sndSonidoFondo.play();
         }
         
     }
