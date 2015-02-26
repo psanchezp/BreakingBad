@@ -105,7 +105,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         
         // se crea el objeto para la pelota
         iPosX = 200;
-        iPosY = 250;       
+        iPosY = 240;       
 	basPelota = new Base(iPosX, iPosY, 21, 22,
                 Toolkit.getDefaultToolkit().getImage(urlImagenPelota));
         
@@ -323,7 +323,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
                 llsVidas.removeLast();
             }
             basPelota.setX(200);
-            basPelota.setY(250);
+            basPelota.setY(240);
             iDireccionYpelota = 3; //Empieza hacia abajo
             iDireccionXpelota = (int) (Math.random() * 2) + 1; //Izq o derecha          
         }
@@ -404,9 +404,9 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         }
         
         //Si los ladrillos estan en 0 se acaba
-        if (iBricks == 0){
+        if (iBricks == 0) {
             bFinal = true;
-            bVivo = false;
+            bVivo = !bVivo;
         }
 
     }
