@@ -240,7 +240,7 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         */ 
         lTiempo = System.currentTimeMillis();
         while (true) {
-            if (!bPausa && !bInicio) {
+            if (!bPausa && bVivo) {
                 actualiza();
                 checaColision();
             }
@@ -285,10 +285,6 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
         }
         if(iDireccionYpelota == 4) { //Arriba
             basPelota.setY(basPelota.getY() - (1 + iVelPelota));
-        }
-        
-        if (iBricks == 0){
-            bFinal = true;
         }
 
     }
@@ -397,6 +393,11 @@ public class BreakingBad extends JFrame implements Runnable, KeyListener {
             iVelPelota = 4;
         }
         
+        //Si los ladrillos estan en 0 se acaba
+        if (iBricks == 0){
+            bFinal = true;
+            bVivo = false;
+        }
 
     }
     
